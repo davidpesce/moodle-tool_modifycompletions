@@ -57,9 +57,7 @@ class helper {
      * @return bool
      */
     public static function is_valid_timestamp($timestamp) {
-        return ((string) (int) $timestamp === $timestamp)
-           && ($timestamp <= PHP_INT_MAX)
-           && ($timestamp >= ~PHP_INT_MAX);
+        return is_numeric($timestamp) && strlen($timestamp) == 10;
     }
 
     /**
