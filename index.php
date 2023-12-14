@@ -79,6 +79,7 @@ if ($form2data = $mform2->is_cancelled()) {
     $processor = new \tool_modifycompletions\processor($cir, $defaults);
 
     echo $OUTPUT->header();
+    echo $OUTPUT->heading($pagetitle);
     $processor->execute(new \tool_modifycompletions\tracker(\tool_modifycompletions\tracker::OUTPUT_HTML, false));
     echo $OUTPUT->continue_button($returnurl);
 
