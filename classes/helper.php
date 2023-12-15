@@ -111,6 +111,7 @@ class helper {
         $response->skipped = 1;
         $response->error = true;
         $response->message = null;
+        $response->revertdata = null;
 
         $userid = $record[0];
         $courseid = $record[1];
@@ -148,6 +149,9 @@ class helper {
 
             $response->message = '[User: ' . $userid . '| Course: ' . $courseid . '] - '
             . 'updated completion timestamp from: ' . $coursecompletion->timecompleted . ' to: ' . $timecompleted;
+
+            // This data can be used to generate a new CSV that can be used to revert all changes just made.
+            $response->revertdata = [$userid, $courseid, $coursecompletion->timecompleted];
 
             $coursecompletion->timecompleted = $timecompleted;
             $coursecriteriacompletion = $currentcompletions['course_completion_crit_compl'];

@@ -60,6 +60,9 @@ class tracker {
      */
     protected $buffer;
 
+    /** @var array [[userid, courseid, prior completion timestamp],] - All the data needed to revert the changes just made. */
+    protected $revertdata = [];
+
     /**
      * Constructor.
      *
@@ -209,6 +212,53 @@ class tracker {
             }
             $buffer->finished();
         }
+    }
+
+    /**
+     * Create and display the link to download the "undo" CSV file.
+     *
+     * @param array $revertdata
+     * @return void
+     */
+    public function revertdownload($revertdata) {
+        $context = \context_system::instance();
+        $file_storage = get_file_storage();
+        $csv_content = $this->create_csv_string($revertdata);
+
+        // Prepare file record object
+        $fileinfo = array(
+            'contextid' => $context->id,
+            'component' => 'tool_modifycompletions',
+            'filearea'  => 'temp',
+            'itemid'    => 0,
+            'filepath'  => '/',
+            'filename'  => 'modify-completions-undo.csv');
+
+        // Create the file
+        $file = $file_storage->create_file_from_string($fileinfo, $csv_content);
+
+        $pathnamehash = $file->get_pathnamehash();
+
+        $downloadurl = new \moodle_url('/admin/tool/modifycompletions/index.php', array('downloadcsv' => 1));
+        $downloadlink = \html_writer::link($downloadurl, get_string('downloadcsv', 'tool_modifycompletions'));
+
+        echo $downloadlink;
+
+    }
+
+    /**
+     * Return a CSV string that contains the reverted data.
+     *
+     * @param array $revertdata
+     * @return string
+     */
+    private function create_csv_string($revertdata) {
+        $csv_content = '';
+        foreach ($revertdata as $revertline) {
+            $csvline = implode(',', $revertline);
+            $csv_content .= $csvline . "\n";
+        }
+        return $csv_content;
     }
 
     /**

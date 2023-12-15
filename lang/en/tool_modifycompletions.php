@@ -68,3 +68,4 @@ $string['userid'] = 'User ID';
 $string['username'] = 'Username';
 $string['courseid'] = 'Course ID';
 $string['previewheader'] = 'Preview of the first ten rows';
+$string['downloadcsv'] = 'Download CSV of modified completion data';

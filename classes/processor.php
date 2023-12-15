@@ -46,6 +46,9 @@ class processor {
     /** @var bool whether the process has been started or not. */
     protected $processstarted = false;
 
+    /** @var array [[userid, courseid, prior completion timestamp],] - All the data needed to revert the changes just made. */
+    protected $revertdata = [];
+
     /**
      * Constructor
      *
@@ -106,6 +109,7 @@ class processor {
                 }
 
                 $tracker->output($this->linenb, true, $status, $response);
+                array_push($this->revertdata, $response->revertdata);
             } else {
                 $errors++;
                 $status = array("Invalid Import Record");
@@ -115,6 +119,7 @@ class processor {
 
         $tracker->finish();
         $tracker->results($total, $modified, $skipped, $errors);
+        $tracker->revertdownload($this->revertdata);
     }
 
     /**
@@ -215,18 +220,4 @@ class processor {
         return $this->errors;
     }
 
-
-
-
-
-
-
-    /**
-     * Get the importid
-     *
-     * @return string the import id
-     */
-    public function get_importid() {
-        return $this->importid;
-    }
 }

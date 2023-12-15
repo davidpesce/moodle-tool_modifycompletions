@@ -29,7 +29,6 @@ require_once($CFG->libdir . '/csvlib.class.php');
 admin_externalpage_setup('toolmodifycompletions');
 
 $importid = optional_param('importid', '', PARAM_INT);
-$confirm  = optional_param('confirm', '0', PARAM_BOOL);
 
 $pagetitle = get_string('modifycompletions', 'tool_modifycompletions');
 $returnurl = new moodle_url('/admin/tool/modifycompletions/index.php', []);
@@ -55,6 +54,17 @@ if (empty($importid)) {
         echo $OUTPUT->footer();
         die();
     }
+} else if (optional_param('downloadcsv', 0, PARAM_INT) === 1) {
+    // Code to generate and send the CSV file
+    $csvcontent = ''; // Assume this contains your CSV data
+
+    // Send appropriate headers to force download
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="revert-modify-completions.csv"');
+
+    // Output the CSV content
+    echo $csvcontent;
+    exit;
 } else {
     $cir = new csv_import_reader($importid, 'modifycompletions');
 }
@@ -81,6 +91,10 @@ if ($form2data = $mform2->is_cancelled()) {
     echo $OUTPUT->header();
     echo $OUTPUT->heading($pagetitle);
     $processor->execute(new \tool_modifycompletions\tracker(\tool_modifycompletions\tracker::OUTPUT_HTML, false));
+
+    // Show download button for reverting the data
+
+
     echo $OUTPUT->continue_button($returnurl);
 
     // Deleting the file after processing.
