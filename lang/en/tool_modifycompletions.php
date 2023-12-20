@@ -29,7 +29,7 @@ $string['pluginname'] = 'Modify Course Completions';
 $string['modifycompletions'] = 'Modify Course Completions';
 $string['modifycompletions_help'] = 'Help text';
 $string['details'] = "
-<p>This tool is used to modify the timestamps of existing course completions. Once the process is complete, the users completion timestamp (date and time) will be modified with the timestamp provided in the upload. An ouput of the results will be available after the process is completed.</p>
+<p>This tool is used to modify the timestamps of existing course completions. Once the process is complete, the users completion timestamp (date and time) will be modified with the timestamp provided in the upload.</p>
 <p><strong>It is recommended that you make a backup of your database before proceeding</strong>.</p>
 <p><strong>The following requirements apply:</strong>
 <ul>
